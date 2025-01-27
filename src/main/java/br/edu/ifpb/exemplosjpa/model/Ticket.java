@@ -14,6 +14,9 @@ public class Ticket {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
+    @OneToOne
+    private TicketType ticketType;
+
     @ElementCollection
     private List<LocalDate> dates;
 

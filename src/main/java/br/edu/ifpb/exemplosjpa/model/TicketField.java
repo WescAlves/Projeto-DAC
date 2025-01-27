@@ -12,9 +12,6 @@ public class TicketField {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    private TicketType ticketType;
-
     private String name;
 
     private String value;

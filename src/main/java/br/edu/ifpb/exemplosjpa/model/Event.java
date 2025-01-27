@@ -30,6 +30,13 @@ public class Event {
     private long maxCapacity;
 
     @ElementCollection
+    @CollectionTable(
+            joinColumns = @JoinColumn(name = "event_id")
+    )
+    @Column(name = "type_value")
+    @MapKeyColumn(name = "type_id")
     private HashMap<TicketType, Long> ticketsDistribution;
+
+    private String category;
 
 }
