@@ -32,6 +32,6 @@ public class TicketController {
 
     @GetMapping("/{id}")
     public Ticket getById(@PathVariable Long id){
-        return ticketService.findById(id);
+        return ticketService.findById(id).orElseThrow();
     }
 }

@@ -2,8 +2,10 @@ package br.edu.ifpb.exemplosjpa.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table
 @Entity
 public class TicketField {
@@ -15,4 +17,9 @@ public class TicketField {
     private String name;
 
     private String value;
+
+    public TicketField(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 }

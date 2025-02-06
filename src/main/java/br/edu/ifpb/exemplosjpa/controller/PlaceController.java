@@ -29,6 +29,6 @@ public class PlaceController {
 
     @GetMapping("/{id}")
     public Place getById(@PathVariable Long id){
-        return placeService.findById(id);
+        return placeService.findById(id).orElseThrow();
     }
 }

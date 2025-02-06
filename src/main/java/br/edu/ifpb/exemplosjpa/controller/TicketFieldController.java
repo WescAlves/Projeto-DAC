@@ -1,9 +1,12 @@
 package br.edu.ifpb.exemplosjpa.controller;
 
+import br.edu.ifpb.exemplosjpa.DTO.TicketFieldDTO;
+import br.edu.ifpb.exemplosjpa.exceptions.TicketTypeNotFoundException;
 import br.edu.ifpb.exemplosjpa.model.TicketField;
+import br.edu.ifpb.exemplosjpa.model.TicketType;
 import br.edu.ifpb.exemplosjpa.service.TicketFieldService;
+import br.edu.ifpb.exemplosjpa.service.TicketTypeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +17,19 @@ public class TicketFieldController {
 
     private TicketFieldService ticketFieldService;
 
-    public TicketFieldController(TicketFieldService ticketFieldService) {
+    private TicketTypeService ticketTypeService;
+
+    public TicketFieldController(TicketFieldService ticketFieldService, TicketTypeService ticketTypeService) {
         this.ticketFieldService = ticketFieldService;
+        this.ticketTypeService = ticketTypeService;
     }
 
     @PostMapping
-    public ResponseEntity<TicketField> create (@RequestBody TicketField ticketField){
-        return ResponseEntity.ok(ticketFieldService.create(ticketField));
+    public ResponseEntity<TicketType> create (@RequestBody TicketFieldDTO dto){
+        TicketType ticketType = ticketTypeService.findById(dto.ticketTypeId()).orElseThrow(TicketTypeNotFoundException::new);
+        ticketType.getFields().add(dto.toTicketField());
+        ticketTypeService.create(ticketType);
+        return ResponseEntity.ok(ticketType);
     }
 
 
@@ -31,6 +40,6 @@ public class TicketFieldController {
 
     @GetMapping("/{id}")
     public TicketField getById(@PathVariable Long id){
-        return ticketFieldService.findById(id);
+        return ticketFieldService.findById(id).orElseThrow();
     }
 }

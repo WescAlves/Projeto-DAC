@@ -6,16 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
-public class GenericCrudService <T, ID> {
+import java.util.Optional;
 
-    private JpaRepository<T, ID> repository;
+public abstract class GenericCrudService <T, ID> {
+
+    protected JpaRepository<T, ID> repository;
 
     public GenericCrudService(JpaRepository<T, ID> repository) {
         this.repository = repository;
-    }
-
-    public GenericCrudService() {
     }
 
     public T create(T obj){
@@ -26,8 +24,8 @@ public class GenericCrudService <T, ID> {
         return repository.findAll();
     }
 
-    public T findById(ID id){
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not Found"));
+    public Optional<T> findById(ID id){
+        return repository.findById(id);
     }
 
     public void deleteById(ID id){

@@ -19,7 +19,7 @@ public class PromoterController {
     }
     @GetMapping("/{id}")
     public Promoter getById(@PathVariable Long id){
-        return promoterService.findById(id);
+        return promoterService.findById(id).orElseThrow();
     }
 
 }

@@ -30,7 +30,7 @@ public class PurchaseController {
 
     @GetMapping("/{id}")
     public Purchase getById(@PathVariable Long id){
-        return purchaseService.findById(id);
+        return purchaseService.findById(id).orElseThrow();
     }
 
 }
