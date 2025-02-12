@@ -14,16 +14,16 @@ public class Ticket {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TicketType ticketType;
 
     @ElementCollection
     private List<LocalDate> dates;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Event event;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
 }

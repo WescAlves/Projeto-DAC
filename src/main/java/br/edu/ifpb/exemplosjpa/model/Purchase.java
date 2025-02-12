@@ -18,8 +18,8 @@ public class Purchase {
     @OneToOne
     private User buyer;
 
-    @OneToMany
-    private List<Ticket> ticket;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 
     private LocalDate purchaseDate;
 

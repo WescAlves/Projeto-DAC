@@ -44,4 +44,9 @@ public class ExceptionConverter {
     @ResponseBody
     public ExceptionDTO converter (TicketTypeNotFoundException e){return new ExceptionDTO(e.getMessage());}
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ExceptionDTO converter(UserNotFoundException e) { return new ExceptionDTO(e.getMessage());}
+
 }

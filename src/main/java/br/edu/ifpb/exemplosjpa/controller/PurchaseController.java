@@ -1,5 +1,6 @@
 package br.edu.ifpb.exemplosjpa.controller;
 
+import br.edu.ifpb.exemplosjpa.DTO.PurchasseDTO;
 import br.edu.ifpb.exemplosjpa.model.Purchase;
 import br.edu.ifpb.exemplosjpa.service.PurchaseService;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public ResponseEntity<Purchase> create (@RequestBody Purchase purchase){
-        return ResponseEntity.ok(purchaseService.create(purchase));
+    public ResponseEntity<Purchase> create (@RequestBody PurchasseDTO dto){
+        System.out.println(dto);
+        return ResponseEntity.ok(purchaseService.create(dto));
     }
 
 
