@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionConverter {
 
     @ExceptionHandler(PlaceNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ExceptionDTO converter(PlaceNotFoundException e) {
         return new ExceptionDTO(e.getMessage());
@@ -57,6 +57,13 @@ public class ExceptionConverter {
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
     public ExceptionDTO converter(NoTicketAvailableException e) {
+        return new ExceptionDTO(e.getMessage());
+    }
+
+    @ExceptionHandler(PromoterNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ExceptionDTO converter(PromoterNotFoundException e) {
         return new ExceptionDTO(e.getMessage());
     }
 }

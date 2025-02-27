@@ -4,8 +4,10 @@ import br.edu.ifpb.exemplosjpa.DTO.EventDto;
 import br.edu.ifpb.exemplosjpa.exceptions.PlaceNotAvailableException;
 import br.edu.ifpb.exemplosjpa.exceptions.PlaceNotFoundException;
 import br.edu.ifpb.exemplosjpa.exceptions.PlacesCapacityNotEnoughException;
+import br.edu.ifpb.exemplosjpa.exceptions.PromoterNotFoundException;
 import br.edu.ifpb.exemplosjpa.model.Event;
 import br.edu.ifpb.exemplosjpa.model.Place;
+import br.edu.ifpb.exemplosjpa.model.Promoter;
 import br.edu.ifpb.exemplosjpa.repository.EventRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class EventService extends GenericCrudService<Event, Long> {
     private EventRepository eventRepository;
     @Autowired
     private PlaceService placeService;
+    @Autowired
+    private PromoterService promoterService;
 
     public EventService(EventRepository eventRepository) {
         super(eventRepository);
@@ -29,7 +33,9 @@ public class EventService extends GenericCrudService<Event, Long> {
     public Event create(EventDto dto) {
         Event event = dto.toEvent();
         Place place = placeService.findById(dto.placeId()).orElseThrow(PlaceNotFoundException::new);
+        Promoter promoter = promoterService.findById(dto.promoterId()).orElseThrow(PromoterNotFoundException::new);
         event.setPlace(place);
+        event.setPromoter(promoter);
         if (event.getPlace().getMaxCapacity() <= event.getMaxCapacity()) {
             throw new PlacesCapacityNotEnoughException();
         }

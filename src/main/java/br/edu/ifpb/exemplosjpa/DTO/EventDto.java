@@ -17,14 +17,12 @@ public record EventDto(
         String name,
         String description,
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-        List<LocalDateTime> dates,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm") List<LocalDateTime> dates,
         Long placeId,
-
+        Long promoterId,
 
         long maxCapacity,
-        String category
-) {
+        String category) {
 
     public Event toEvent() {
         Event event = new Event(name, description, dates, maxCapacity, category);
