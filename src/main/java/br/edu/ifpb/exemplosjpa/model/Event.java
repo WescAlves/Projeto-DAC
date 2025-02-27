@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -21,23 +22,32 @@ import java.util.List;
 @Entity
 @Table
 public class Event {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
 
     private String description;
+
     @ElementCollection
     private List<LocalDateTime> dates;
+
     @ManyToOne
     private Place place;
 
     private long maxCapacity;
-    @OneToMany(cascade = CascadeType.ALL)
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<TicketType> ticketTypes;
 
     private String category;
+
+    @ManyToOne
+    private Promoter promoter;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<TicketDistribuition> ticketDistribuitions;
 
     public Event(String name, String description, List<LocalDateTime> dates, long maxCapacity, String category) {
         this.name = name;

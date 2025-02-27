@@ -1,5 +1,7 @@
 package br.edu.ifpb.exemplosjpa.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,4 +21,7 @@ public class Promoter {
     private String password;
 
     private String cpf;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Event> events;
 }

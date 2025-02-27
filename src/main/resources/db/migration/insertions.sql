@@ -34,24 +34,14 @@ VALUES ('VIP Access', 'true'),
        ('Early Access', 'false');
 
 -- Inserção para a tabela ticket_type
-INSERT INTO ticket_type (price, quantity, name)
-VALUES (50.0, 100, 'General Admission'),
-       (150.0, 50, 'VIP Pass');
-
--- Inserção para a tabela event_tickets_distribution
-INSERT INTO event_tickets_distribution (event_id, tickets_distribution_key, type_value)
-VALUES (1, 1, 100),
-       (2, 2, 50);
+INSERT INTO ticket_type (price, name)
+VALUES (50.0, 'General Admission'),
+       (150.0, 'VIP Pass');
 
 -- Inserção para a tabela ticket
 INSERT INTO ticket (event_id, ticket_type_id, user_id)
 VALUES (1, 1, 1),
        (2, 2, 2);
-
--- Inserção para a tabela purchase_ticket
-INSERT INTO purchase_ticket (purchase_id, ticket_id)
-VALUES (1, 1),
-       (2, 2);
 
 -- Inserção para a tabela ticket_dates
 INSERT INTO ticket_dates (dates, ticket_id)

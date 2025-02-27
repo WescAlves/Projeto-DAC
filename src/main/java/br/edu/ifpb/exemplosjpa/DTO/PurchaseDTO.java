@@ -4,6 +4,6 @@ import br.edu.ifpb.exemplosjpa.model.Ticket;
 
 import java.util.List;
 
-public record PurchasseDTO(Long buyerId,
-                           List<TicketsDTO> ticketDTOs) {
+public record PurchaseDTO(Long buyerId,
+        List<TicketsDTO> ticketDTOs) {
 }

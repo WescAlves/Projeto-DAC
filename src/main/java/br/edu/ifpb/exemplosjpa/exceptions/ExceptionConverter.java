@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
 @ControllerAdvice
 public class ExceptionConverter {
 
@@ -20,33 +21,42 @@ public class ExceptionConverter {
     @ExceptionHandler(PlaceNotAvailableException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ResponseBody
-    public ExceptionDTO converter(PlaceNotAvailableException e){
+    public ExceptionDTO converter(PlaceNotAvailableException e) {
         return new ExceptionDTO(e.getMessage());
     }
 
     @ExceptionHandler(PlacesCapacityNotEnoughException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ResponseBody
-    public ExceptionDTO converter(PlacesCapacityNotEnoughException e){
+    public ExceptionDTO converter(PlacesCapacityNotEnoughException e) {
         return new ExceptionDTO(e.getMessage());
     }
 
     @ExceptionHandler(EventNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ExceptionDTO converter(EventNotFoundException e){
+    public ExceptionDTO converter(EventNotFoundException e) {
         return new ExceptionDTO(e.getMessage());
     }
-
 
     @ExceptionHandler(TicketTypeNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ExceptionDTO converter (TicketTypeNotFoundException e){return new ExceptionDTO(e.getMessage());}
+    public ExceptionDTO converter(TicketTypeNotFoundException e) {
+        return new ExceptionDTO(e.getMessage());
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ExceptionDTO converter(UserNotFoundException e) { return new ExceptionDTO(e.getMessage());}
+    public ExceptionDTO converter(UserNotFoundException e) {
+        return new ExceptionDTO(e.getMessage());
+    }
 
+    @ExceptionHandler(NoTicketAvailableException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public ExceptionDTO converter(NoTicketAvailableException e) {
+        return new ExceptionDTO(e.getMessage());
+    }
 }

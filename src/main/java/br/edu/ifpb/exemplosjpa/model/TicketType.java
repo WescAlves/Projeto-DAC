@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -19,16 +21,17 @@ public class TicketType {
 
     private String name;
 
-    private long quantity;
-
     private double price;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "ticketType")
+    private List<Ticket> tickets;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<TicketField> fields = new ArrayList<>();
 
-    public TicketType(String name, long quantity, double price) {
+    public TicketType(String name, double price) {
         this.name = name;
-        this.quantity = quantity;
         this.price = price;
     }
 }

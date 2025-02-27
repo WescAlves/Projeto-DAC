@@ -15,7 +15,7 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User buyer;
 
     @OneToMany(cascade = CascadeType.ALL)

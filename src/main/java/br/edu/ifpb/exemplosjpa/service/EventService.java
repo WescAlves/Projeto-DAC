@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EventService extends GenericCrudService<Event, Long>{
+public class EventService extends GenericCrudService<Event, Long> {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
@@ -26,38 +26,34 @@ public class EventService extends GenericCrudService<Event, Long>{
         super(eventRepository);
     }
 
-
-    public Event create (EventDto dto){
+    public Event create(EventDto dto) {
         Event event = dto.toEvent();
         Place place = placeService.findById(dto.placeId()).orElseThrow(PlaceNotFoundException::new);
         event.setPlace(place);
-        if(event.getPlace().getMaxCapacity()<event.getMaxCapacity()){
+        if (event.getPlace().getMaxCapacity() <= event.getMaxCapacity()) {
             throw new PlacesCapacityNotEnoughException();
         }
-        if(verifyAvailabilityDateAndPlace(event.getPlace(), event.getDates())){
+        if (verifyAvailabilityDateAndPlace(event.getPlace(), event.getDates())) {
             return eventRepository.save(event);
         }
         throw new PlaceNotAvailableException();
     }
 
-    public boolean verifyAvailabilityDateAndPlace(Place place, List<LocalDateTime> dates){
+    public boolean verifyAvailabilityDateAndPlace(Place place, List<LocalDateTime> dates) {
         List<Event> events = eventRepository.findEventsByPlace(place);
         return isDateAvailable(events, dates);
     }
 
+    public boolean isDateAvailable(List<Event> events, List<LocalDateTime> dates) {
 
-    public boolean isDateAvailable(List<Event> events, List<LocalDateTime> dates){
-
-        for(Event event: events){
-            for(LocalDateTime date: dates){
-                if(event.getDates().contains(date)){
+        for (Event event : events) {
+            for (LocalDateTime date : dates) {
+                if (event.getDates().contains(date)) {
                     return false;
                 }
             }
         }
         return true;
     }
-
-
 
 }
