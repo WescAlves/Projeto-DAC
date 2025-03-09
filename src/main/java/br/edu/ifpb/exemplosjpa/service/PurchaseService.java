@@ -1,10 +1,11 @@
 package br.edu.ifpb.exemplosjpa.service;
 
 import br.edu.ifpb.exemplosjpa.DTO.PurchaseDTO;
-
+import br.edu.ifpb.exemplosjpa.DTO.PurchaseQueueDTO;
 import br.edu.ifpb.exemplosjpa.DTO.TicketsDTO;
+import br.edu.ifpb.exemplosjpa.amqp.EmailEventProducer;
+import br.edu.ifpb.exemplosjpa.amqp.PurchaseEventProducer;
 import br.edu.ifpb.exemplosjpa.email.Email;
-import br.edu.ifpb.exemplosjpa.email.EmailService;
 import br.edu.ifpb.exemplosjpa.exceptions.EventNotFoundException;
 import br.edu.ifpb.exemplosjpa.exceptions.NoTicketAvailableException;
 import br.edu.ifpb.exemplosjpa.exceptions.TicketTypeNotFoundException;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PurchaseService extends GenericCrudService<Purchase, Long> {
@@ -29,15 +29,18 @@ public class PurchaseService extends GenericCrudService<Purchase, Long> {
     private TicketTypeService ticketTypeService;
     private EventService eventService;
     private UserService userService;
-    private EmailService emailService;
+    private EmailEventProducer emailEventProducer;
+    private PurchaseEventProducer purchaseEventProducer;
 
     public PurchaseService(JpaRepository<Purchase, Long> repository, TicketTypeService ticketTypeService,
-            EventService eventService, UserService userService, EmailService emailService) {
+            EventService eventService, UserService userService, EmailEventProducer emailEventProducer,
+            PurchaseEventProducer purchaseEventProducer) {
         super(repository);
         this.ticketTypeService = ticketTypeService;
         this.eventService = eventService;
         this.userService = userService;
-        this.emailService = emailService;
+        this.emailEventProducer = emailEventProducer;
+        this.purchaseEventProducer = purchaseEventProducer;
     }
 
     public Purchase create(PurchaseDTO dtos) {
@@ -74,7 +77,9 @@ public class PurchaseService extends GenericCrudService<Purchase, Long> {
         String eventName = event.getName();
         Email email = new Email(buyer.getEmail(), "Confirmação de compra",
                 "Ingresso para o evento: " + eventName + " confirmado!");
-        emailService.sendEmail(email);
+        emailEventProducer.sendEventEmail(email);
+
+        purchaseEventProducer.sendEventPurchase(new PurchaseQueueDTO(purchase.getId(), purchase.getTickets()));
 
         return repository.save(purchase);
     }
