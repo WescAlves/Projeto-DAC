@@ -2,6 +2,8 @@ package br.edu.ifpb.exemplosjpa.config;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -24,11 +26,16 @@ public class AmqpConfig {
         return event -> rabbitAdmin.initialize();
     }
 
+//    @Bean
+//    public SimpleMessageConverter converter() {
+//        SimpleMessageConverter converter = new SimpleMessageConverter();
+//        converter.setAllowedListPatterns(List.of("*", "java.util.*"));
+//        return converter;
+//    }
+
     @Bean
-    public SimpleMessageConverter converter() {
-        SimpleMessageConverter converter = new SimpleMessageConverter();
-        converter.setAllowedListPatterns(List.of("br.edu.ifpb.exemplosjpa.*"));
-        return converter;
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
 }

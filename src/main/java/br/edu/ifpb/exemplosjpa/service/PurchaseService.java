@@ -1,8 +1,6 @@
 package br.edu.ifpb.exemplosjpa.service;
 
-import br.edu.ifpb.exemplosjpa.DTO.PurchaseDTO;
-import br.edu.ifpb.exemplosjpa.DTO.PurchaseQueueDTO;
-import br.edu.ifpb.exemplosjpa.DTO.TicketsDTO;
+import br.edu.ifpb.exemplosjpa.DTO.*;
 import br.edu.ifpb.exemplosjpa.amqp.EmailEventProducer;
 import br.edu.ifpb.exemplosjpa.amqp.PurchaseEventProducer;
 import br.edu.ifpb.exemplosjpa.email.Email;
@@ -78,8 +76,13 @@ public class PurchaseService extends GenericCrudService<Purchase, Long> {
         Email email = new Email(buyer.getEmail(), "Confirmação de compra",
                 "Ingresso para o evento: " + eventName + " confirmado!");
         emailEventProducer.sendEventEmail(email);
-
-        purchaseEventProducer.sendEventPurchase(new PurchaseQueueDTO(purchase.getId(), purchase.getTickets()));
+        List<TicketProducerDTO> ticketProducerDTOS = new ArrayList<>();
+        for (Ticket ticket:purchase.getTickets()
+             ) {
+            ticketProducerDTOS.add(new TicketProducerDTO(ticket.getId(), ticket.getUser().getCpf()));
+        }
+        PurchaseProducerDTO purchaseProducerDTO = new PurchaseProducerDTO(ticketProducerDTOS);
+        purchaseEventProducer.sendEventPurchase(purchaseProducerDTO);
 
         return repository.save(purchase);
     }
